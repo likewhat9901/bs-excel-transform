@@ -29,10 +29,10 @@ def transform_banksalad_excel_sheet1(file_path):
 
     pass
 
-def classify_banksalad_excel_sheet2(file_path):
+def classify_banksalad_excel_sheet2(file_path, target_months):
     sheet_name = 1
     df = read_banksalad_sheet(file_path, sheet_name)
-    target_months = ['2025-11', '2025-12']
+    
     classified_data = classify_transactions(df, target_months)
     if add_classified_sheets(file_path, classified_data):
         print("✓ 분류 데이터 추가 완료!")
@@ -51,10 +51,15 @@ def main():
     if not file_path.exists():
         print(f"❌ 파일이 존재하지 않습니다: {file_path}")
         sys.exit(1)
+
+    raw = sys.argv[2]
+    target_months = raw.split(",")
+
+    print("분류 대상 연도-월:", target_months)
     
     try:
         transform_banksalad_excel_sheet1(file_path)
-        classify_banksalad_excel_sheet2(file_path)
+        classify_banksalad_excel_sheet2(file_path, target_months)
     except Exception as e:
         print(f"❌ 메인함수 실행 중 오류 발생: {e}")
 
