@@ -1,3 +1,6 @@
+import sys
+from pathlib import Path
+
 from excel_reader import read_banksalad_sheet
 from excel_transform_sheet1 import transform_summary
 from excel_writer_sheet1 import save_to_excel
@@ -38,7 +41,16 @@ def classify_banksalad_excel_sheet2(file_path):
     pass
 
 def main():
-    file_path = '2025-01-05~2026-01-05.xlsx'
+    if len(sys.argv) < 2:
+        print("❌ 입력 엑셀 파일을 인자로 전달해주세요")
+        print("예: python main.py input.xlsx")
+        sys.exit(1)
+
+    file_path = Path(sys.argv[1])
+
+    if not file_path.exists():
+        print(f"❌ 파일이 존재하지 않습니다: {file_path}")
+        sys.exit(1)
     
     try:
         transform_banksalad_excel_sheet1(file_path)
